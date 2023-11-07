@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+    <label for="fcategory">Categoria:</label><br>
+    <input type="text" id="fcategory" name="fcategory" value=""><br>
+    <div>
+        <label for="fquestion">Pregunta:</label><br>
+        <input type="text" id="fquestion" name="fquestion" value=""><br>
+        <label for="fresponse1">a:</label><br>
+        <input type="text" id="fresponse1" name="fresponse1" value=""><br>
+        <label for="fresponse2">b:</label><br>
+        <input type="text" id="fresponse2" name="fresponse2" value=""><br>
+        <label for="fresponse3">c:</label><br>
+        <input type="text" id="fresponse3" name="fresponse3" value=""><br>
+        <label for="fresponse4">d:</label><br>
+        <input type="text" id="fresponse4" name="fresponse4" value=""><br>
+        <label>Solucion:</label><br>
+   
+<br>
+        <label for="a">a:</label>
+        <input type="radio" id="a" name="answer" value="a"><br>
+        <label for="b">b:</label>
+        <input type="radio" id="b" name="answer" value="b"><br>
+        <label for="c">c:</label>
+        <input type="radio" id="c" name="answer" value="c"><br>
+        <label for="d">d:</label>
+        <input type="radio" id="d" name="answer" value="d">
+
+    </div>
+    <button id="next">siguiente</button>
+    <button id="finish">acabar</button>
+    <script>
+        let quiz = {
+            id: "",
+            category: "",
+            questions: []
+        };
+        let siguiente = document.getElementById("next");
+        let finish = document.getElementById("finish");
+        let inputCategory = document.getElementById("fcategory");
+        let inputQuestion = document.getElementById("fquestion");
+        let inputA = document.getElementById("fresponse1");
+        let inputB = document.getElementById("fresponse2");
+        let inputC = document.getElementById("fresponse3");
+        let inputD = document.getElementById("fresponse4");
+        siguiente.addEventListener("click", () => {
+           let answer= document.querySelector('input[name="answer"]:checked').value;
+
+            quiz.questions.push({ id: "", text: inputQuestion.value, opt1: inputA.value, opt2: inputB.value, opt3: inputC.value, opt4: inputD.value, answer: answer });
+            console.log(inputQuestion.value);
+            console.log(inputA.value);
+            console.log(inputB.value);
+            console.log(inputC.value);
+            console.log(inputD.value);
+            console.log(document.querySelector('input[name="answer"]:checked').value);
+            inputQuestion.value = "";
+            inputA.value = "";
+            inputB.value = "";
+            inputC.value = "";
+            inputD.value = "";
+        });
+        finish.addEventListener("click", () => {
+            quiz.category = inputCategory.value;
+            console.log(quiz);
+            sendResults();
+        })
+
+
+        function sendResults() {
+
+            fetch(`http://localhost:8080/api/v1/addQuiz`, {
+                method: "POST",
+                body: JSON.stringify(quiz),
+                headers: {
+                    "Content-Type": "application/json",
+                             }
+            }).then(()=>{
+                window.location.href = "/";
+            })
+        }
+    </script>
+</body>
+
+</html>

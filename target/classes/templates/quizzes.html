@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .quizzCard{
+            background-color: #d47f79;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quizzes</h1>
+    <tr th:each="quizz, iterstat: ${quizzes}">
+        <div class="quizzCard" >
+            <a th:href="@{'/quizz?id='+ ${quizz.id}}">
+                <p>Category: <td th:text="${quizz.category}" th:id="|td${iterstat.index}|"></td></p>
+                <p>Questions: <td th:text="${quizz.questions.size()}" th:id="|td${iterstat.index}|"></td></p>
+            </a>
+
+        </div>
+
+    </tr>
+</body>
+</html>

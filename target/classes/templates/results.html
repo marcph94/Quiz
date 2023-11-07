@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultado</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        .quizCard {
+            background-color: antiquewhite;
+        }
+        .correct {
+            background-color: rgb(117, 218, 92);
+        }
+        .incorrect {
+            background-color: rgb(230, 98, 98);
+        }
+    </style>
+</head>
+<body>
+    <h1>Resultado: </h1>
+    <h2 id="questions"></h2>
+    <h2 id="correct"></h2>
+    <h2 id="incorrect"></h2>
+    <h2 th:text="${quiz.category}"></h2>
+    <tr th:each="question, iterstat: ${quiz.questions}">
+        <div class="quizCard">
+            <p>Question: <td th:text="${question.text}" th:id="|td${iterstat.index}|"></td>
+            </p>
+            <p>a: <td th:text="${question.opt1}"></td>
+            </p>
+            <p>b: <td th:text="${question.opt2}"></td>
+            </p>
+            <p>c: <td th:text="${question.opt3}"></td>
+            </p>
+            <p>d: <td th:text="${question.opt4}"></td>
+            </p>
+            <div th:attr="class=${question.answer == result.answers.get(iterstat.index) ? 'correct' : 'incorrect'}">
+                <p>La respuesta es: <td th:text="${question.answer}"></td>
+                </p>
+                <p>Tu respuesta fue: <td th:text="${result.answers.get(iterstat.index)}"></td>
+                </p>
+            </div>
+        </div>
+    </tr>
+    <script>
+        let corrects= document.getElementsByClassName("correct");
+        let incorrects= document.getElementsByClassName("incorrect");
+        document.getElementById("questions").innerText=+corrects.length+ incorrects.length+ " preguntas"; 
+        document.getElementById("correct").innerText=+corrects.length+ " correctas"
+        document.getElementById("incorrect").innerText=incorrects.length +" incorrectas" ;
+    </script>
+</body>
+</html>

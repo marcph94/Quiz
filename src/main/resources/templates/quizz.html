@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quizz</title>
+    <script type="text/javascript" th:src="@{/js/index.js}"></script>
+    <style>
+        .quizzCard {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+
+
+</head>
+
+<body onload="getQuestion()">
+    <h1>Quizz</h1>
+    <h2 th:text="${quiz.category}"></h2>
+
+    <form id="form">
+        <fieldset>
+            <div class="quizzCard">
+                <legend id="legend"></legend>
+                <div>
+                    <input type="radio" id="a" name="question" value="a" />
+                    <label id="labelA" for="a"></label>
+                </div>
+
+                <div>
+                    <input type="radio" id="b" name="question" value="b" />
+                    <label id="labelB" for="b"></label>
+                </div>
+
+                <div>
+                    <input type="radio" id="c" name="question" value="c" />
+                    <label id="labelC" for="c"></label>
+                </div>
+                <div>
+                    <input type="radio" id="d" name="question" value="d" />
+                    <label id="labelD" for="d"></label>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+    </fieldset>
+
+    </form>
+    <script>
+        const API_URL = "http://localhost:8080/api/v1/quiz?";
+        const ID_PARAM = "id=";
+        const NUMBER_PARAM = "&number=";
+        let id = "[[${id}]]";
+        let number = 0;
+
+        let maxQuestions = [[${ quiz.questions.size() }]]
+
+        let form = document.getElementById("form");
+        let inputA = document.getElementById("a");
+        let inputB = document.getElementById("b");
+        let inputC = document.getElementById("c");
+        let inputD = document.getElementById("d");
+        let legend = document.getElementById("legend");
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+
+        const idQuizURL = urlParams.get('id')
+
+        let responses = { idQuiz: idQuizURL, answers: [] };
+        inputA.addEventListener("change", () => {
+            console.log("selected a");
+            responses["answers"].push("a");
+            inputA.checked = false;
+            getQuestion();
+        });
+        inputB.addEventListener("change", () => {
+            console.log("selected b");
+            responses["answers"].push("b");
+            getQuestion();
+            inputB.checked = false;
+        });
+        inputC.addEventListener("change", () => {
+            console.log("selected c");
+            responses["answers"].push("c");
+            getQuestion();
+            inputC.checked = false;
+        });
+        inputD.addEventListener("change", () => {
+            console.log("selected d");
+            responses["answers"].push("d");
+            getQuestion();
+            inputD.checked = false;
+        });
+
+        function getQuestion() {
+            if (number >= maxQuestions) {
+                form.style.display = "none";
+                sendResults();
+            } else {
+                let url = API_URL + ID_PARAM + id + NUMBER_PARAM + number;
+                fetch(url).then((response) => {
+                    response.json().then((result) => {
+                        console.log(result);
+                        legend.textContent = result.text;
+                        document.getElementById("labelA").textContent = result.opt1;
+                        document.getElementById("labelB").textContent = result.opt2;
+                        document.getElementById("labelC").textContent = result.opt3;
+                        document.getElementById("labelD").textContent = result.opt4;
+                        if (number < maxQuestions)
+                            number++;
+                    })
+                });
+            }
+
+
+        }
+
+        function sendResults() {
+            fetch(`/api/v1/results`, {
+                method: "POST",
+                body: JSON.stringify(responses),
+                headers: {
+                    
+                                        "Content-Type": "application/json"
+                }
+            }).then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    window.location.href = "/result?id="+data;
+
+                })
+
+        }
+    </script>
+</body>
+
+</html>
