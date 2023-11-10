@@ -1,4 +1,4 @@
-package com.example.accessingdatamongodb.service;
+package com.example.accessingdatamongodb.repository;
 
 import com.example.accessingdatamongodb.data.Quiz;
 import org.springframework.data.mongodb.repository.MongoRepository;

@@ -38,6 +38,7 @@ public class SecurityConfig {
         ).csrf().disable().authorizeHttpRequests((authz) -> authz
                         .requestMatchers(antMatcher("/")).permitAll()
                         .requestMatchers(antMatcher("/quizzes")).permitAll()
+                        .requestMatchers(antMatcher("/404")).permitAll()
                         .requestMatchers(antMatcher("/quizz")).permitAll()
                         .requestMatchers(antMatcher("/result")).permitAll()
                         .requestMatchers(antMatcher("/api/v1/quiz")).permitAll()

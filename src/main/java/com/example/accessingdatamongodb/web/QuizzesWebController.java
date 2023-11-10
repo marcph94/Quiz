@@ -1,6 +1,6 @@
 package com.example.accessingdatamongodb.web;
 import com.example.accessingdatamongodb.data.Quiz;
-import com.example.accessingdatamongodb.service.QuizRepository;
+import com.example.accessingdatamongodb.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
